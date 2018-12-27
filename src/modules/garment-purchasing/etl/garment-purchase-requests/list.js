@@ -9,29 +9,28 @@ export class List {
 
     columns = [
 
-        { field: "no", title: "No" },
-        { field: "roNo", title: "Nomor Ro" },
-        { field: "artikel", title: "Artikel" },
+        { field: "PRNo", title: "No" },
+        { field: "RONo", title: "Nomor Ro" },
+        { field: "Article", title: "Artikel" },
         {
-            field: "date", title: "Tanggal", formatter: function (value, data, index) {
+            field: "Date", title: "Tanggal", formatter: function (value, data, index) {
                 return moment(value).format("DD MMM YYYY");
             }
         },
-        {field: "buyer.name", title: "Buyer" },
-        { field: "migrated", title: "migrated" },
+        { field: "BuyerName", title: "Buyer" },
+        // { field: "migrated", title: "migrated" },
     ];
 
     loader = (info) => {
         var order = {};
         if (info.sort)
             order[info.sort] = info.order;
-        console.log(info)
         var arg = {
             page: parseInt(info.offset / info.limit, 10) + 1,
             size: info.limit,
             keyword: info.search,
             order: order,
-            select: ["no", "roNo", "date", "artikel","buyer.name", "migrated"]
+            // select: ["no", "roNo", "date", "artikel","buyer.name", "migrated"]
         }
 
         return this.service.search(arg)

@@ -3,14 +3,13 @@ import { HttpClient } from 'aurelia-fetch-client';
 import { RestService } from '../../../../utils/rest-service';
 
 
-const serviceUri = 'etl-garment-purchase-requests';
+const serviceUri = 'garment-purchase-requests/etl';
 
 export class Service extends RestService {
 
     constructor(http, aggregator, config, endpoint) {
-        super(http, aggregator, config, "garment-purchasing");
+        super(http, aggregator, config, "purchasing-azure");
     }
-
 
     search(info) {
         var endpoint = `${serviceUri}`;
@@ -23,7 +22,7 @@ export class Service extends RestService {
     }
 
     migrate(data) {
-        var endpoint = `${serviceUri}/migrate/file`;
+        var endpoint = `${serviceUri}`;
         return super.post(endpoint, data);
     }
 

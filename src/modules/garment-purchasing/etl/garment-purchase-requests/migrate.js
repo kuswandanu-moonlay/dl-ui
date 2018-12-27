@@ -89,10 +89,11 @@ export class Migrate {
     }
 
     saveCallback(event) {
-        this.service.getDataSql(this.data).then((data) => {
-            this.totalData = data;
-            this.migratedFalse = 0;
-            this.ETL();
+        this.service.migrate(this.data).then((data) => {
+            // this.totalData = data;
+            // this.migratedFalse = 0;
+            // this.ETL();
+            alert("Halo");
         });
     }
 }
