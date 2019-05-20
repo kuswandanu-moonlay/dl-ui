@@ -118,55 +118,48 @@ export class List {
 
     fillTable() {
         const columns = [
-            { field: 'KodeBooking', title: 'Kode Booking' },
-            { field: 'TanggalBooking', title: 'Tanggal Booking' },
-            { field: 'Buyer', title: 'Buyer' },
-            { field: 'JumlahOrder', title: 'Jumlah Order' },
-            { field: 'TanggalPengirimanBooking', title: 'Tanggal Pengiriman(booking)' },
-            { field: 'Komoditi', title: 'Komoditi' },
-            { field: 'JumlahConfirm', title: 'Jumlah Confirm' },
-            { field: 'TanggalPengirimanConfirm', title: 'Tanggal Pengiriman(confirm)' },
-            { field: 'TanggalConfirm', title: 'Tanggal Confirm' },
-            { field: 'Keterangan', title: 'Keterangan' },
-            { field: 'StatusConfirm', title: 'Status Confirm' },
-            { field: 'StatusBookingOrder', title: 'Status Booking Order' },
-            { field: 'SisaOrder', title: 'Sisa Order (Belum Confirm)' },
-            { field: 'SelisihHari', title: 'Selisih Hari (dari Tanggal Pengiriman)' },
-            { field: 'NotConfirmedOrder', title: 'Not Confirmed Order (MINUS)' },
-            { field: 'OverConfirm', title: 'Over Confirm (SURPLUS)' }
+            { field: 'BookingOrderNo', title: 'Kode<br>Booking' },
+            { field: 'BookingOrderDate', title: 'Tanggal<br>Booking' },
+            { field: 'BuyerName', title: 'Buyer' },
+            { field: 'OrderQuantity', title: 'Jumlah<br>Order' },
+            { field: 'DeliveryDate', title: 'Tanggal<br>Pengiriman(booking)' },
+            { field: 'ComodityName', title: 'Komoditi' },
+            { field: 'ConfirmQuantity', title: 'Jumlah<br>Confirm' },
+            { field: 'DeliveryDateItems', title: 'Tanggal<br>Pengiriman(confirm)' },
+            { field: 'ConfirmDate', title: 'Tanggal<br>Confirm' },
+            { field: 'Remark', title: 'Keterangan' },
+            { field: 'StatusConfirm', title: 'Status<br>Confirm' },
+            { field: 'StatusBooking', title: 'Status<br>Booking Order' },
+            { field: 'OrderLeft', title: 'Sisa Order<br>(Belum Confirm)' },
+            { field: 'DateDiff', title: 'Selisih Hari<br>(dari Tanggal Pengiriman)' },
+            { field: 'NotConfirmedQuantity', title: 'Not Confirmed<br>Order (MINUS)' },
+            { field: 'SurplusQuantity', title: 'Over Confirm<br>(SURPLUS)' }
         ];
 
-        let data = [];
-        for (let item of this.data) {
-            let rowData = {
-                KodeBooking : item.BookingOrderNo,
-                TanggalBooking : item.BookingOrderDate,
-                Buyer : item.BuyerName,
-                JumlahOrder : item.OrderQuantity,
-                TanggalPengirimanBooking : item.DeliveryDate,
-                Komoditi : item.ComodityName,
-                JumlahConfirm : item.ConfirmQuantity,
-                TanggalPengirimanConfirm : item.DeliveryDateItems,
-                TanggalConfirm : item.ConfirmDate,
-                Keterangan : item.Remark,
-                StatusConfirm : item.StatusConfirm,
-                StatusBookingOrder : item.StatusBooking,
-                SisaOrder : item.OrderLeft,
-                SelisihHari : item.DateDiff,
-                NotConfirmedOrder : item.NotConfirmedQuantity,
-                OverConfirm : item.SurplusQuantity
-            };
-
-            data.push(rowData);
-        }
-
         var bootstrapTableOptions = {
+            undefinedText: '',
             columns: columns,
-            data: data,
+            data: this.data,
         };
 
         bootstrapTableOptions.height = $(window).height() - $('.navbar').height() - $('.navbar').height() - 25;
         $(this.table).bootstrapTable('destroy').bootstrapTable(bootstrapTableOptions);
+
+        for (const rowIndex in this.data) {
+            if(this.data[rowIndex].BookingOrderNo) {
+                $(this.table).bootstrapTable('mergeCells', { index : rowIndex, field: "BookingOrderNo", rowspan: this.data[rowIndex].row_count, colspan: 1 });
+                $(this.table).bootstrapTable('mergeCells', { index : rowIndex, field: "BookingOrderDate", rowspan: this.data[rowIndex].row_count, colspan: 1 });
+                $(this.table).bootstrapTable('mergeCells', { index : rowIndex, field: "BuyerName", rowspan: this.data[rowIndex].row_count, colspan: 1 });
+                $(this.table).bootstrapTable('mergeCells', { index : rowIndex, field: "OrderQuantity", rowspan: this.data[rowIndex].row_count, colspan: 1 });
+                $(this.table).bootstrapTable('mergeCells', { index : rowIndex, field: "DeliveryDate", rowspan: this.data[rowIndex].row_count, colspan: 1 });
+                $(this.table).bootstrapTable('mergeCells', { index : rowIndex, field: "StatusConfirm", rowspan: this.data[rowIndex].row_count, colspan: 1 });
+                $(this.table).bootstrapTable('mergeCells', { index : rowIndex, field: "StatusBooking", rowspan: this.data[rowIndex].row_count, colspan: 1 });
+                $(this.table).bootstrapTable('mergeCells', { index : rowIndex, field: "OrderLeft", rowspan: this.data[rowIndex].row_count, colspan: 1 });
+                $(this.table).bootstrapTable('mergeCells', { index : rowIndex, field: "DateDiff", rowspan: this.data[rowIndex].row_count, colspan: 1 });
+                $(this.table).bootstrapTable('mergeCells', { index : rowIndex, field: "NotConfirmedQuantity", rowspan: this.data[rowIndex].row_count, colspan: 1 });
+                $(this.table).bootstrapTable('mergeCells', { index : rowIndex, field: "SurplusQuantity", rowspan: this.data[rowIndex].row_count, colspan: 1 });
+            }
+        }
     }
 
     changePage(e) {

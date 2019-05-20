@@ -102,53 +102,41 @@ export class List {
 
     fillTable() {
         const columns = [
-            { field: 'KodeBooking', title: 'Kode Booking' }, 
-            { field: 'TanggalBooking', title: 'Tanggal Booking' }, 
-            { field: 'Buyer', title: 'Buyer' }, 
-            { field: 'JumlahBookingOrderAwal', title: 'Jumlah Booking Order Awal' }, 
-            { field: 'JumlahBookingOrderAkhir', title: 'Jumlah Booking Order Akhir' }, 
-            { field: 'TanggalPengirimanBooking', title: 'Tanggal Pengiriman(booking)' }, 
-            { field: 'Komoditi', title: 'Komoditi' }, 
-            { field: 'JumlahConfirm', title: 'Jumlah Confirm' }, 
-            { field: 'TanggalConfirm', title: 'Tanggal Confirm' }, 
-            { field: 'TanggalPengirimanConfirm', title: 'Tanggal Pengiriman(confirm)' }, 
-            { field: 'Keterangan', title: 'Keterangan' }, 
-            { field: 'TanggalCancel', title: 'Tanggal Cancel' }, 
-            { field: 'JumlahyangDicancel', title: 'Jumlah yang Dicancel' }, 
-            { field: 'StatusCancel', title: 'Status Cancel' }, 
+            { field: 'BookingOrderNo', title: 'Kode<br>Booking' }, 
+            { field: 'BookingOrderDate', title: 'Tanggal<br>Booking' }, 
+            { field: 'BuyerName', title: 'Buyer' }, 
+            { field: 'EarlyBooking', title: 'Jumlah Booking<br>Order Awal' }, 
+            { field: 'OrderQuantity', title: 'Jumlah Booking<br>Order Akhir' }, 
+            { field: 'DeliveryDate', title: 'Tanggal Pengiriman<br>(booking)' }, 
+            { field: 'ComodityName', title: 'Komoditi' }, 
+            { field: 'ConfirmQuantity', title: 'Jumlah<br>Confirm' }, 
+            { field: 'ConfirmDate', title: 'Tanggal<br>Confirm' }, 
+            { field: 'DeliveryDateItem', title: 'Tanggal Pengiriman<br>(confirm)' }, 
+            { field: 'Remark', title: 'Keterangan' }, 
+            { field: 'CanceledDate', title: 'Tanggal Cancel' }, 
+            { field: 'CanceledQuantity', title: 'Jumlah<br>Dicancel' }, 
+            { field: 'CancelStatus', title: 'Status<br>Cancel' }, 
         ];
 
-        let data = [];
-        for (let item of this.data) {
-            let rowData = {
-                KodeBooking : item.BookingOrderNo, 
-                TanggalBooking : item.BookingOrderDate, 
-                Buyer : item.BuyerName, 
-                JumlahBookingOrderAwal : item.EarlyBooking, 
-                JumlahBookingOrderAkhir : item.OrderQuantity, 
-                TanggalPengirimanBooking : item.DeliveryDate, 
-                Komoditi : item.ComodityName, 
-                JumlahConfirm : item.ConfirmQuantity, 
-                TanggalConfirm : item.ConfirmDate, 
-                TanggalPengirimanConfirm : item.DeliveryDateItem, 
-                Keterangan : item.Remark, 
-                TanggalCancel : item.CanceledDate, 
-                JumlahyangDicancel : item.CanceledQuantity, 
-                StatusCancel : item.CancelStatus, 
-            };
-
-            data.push(rowData);
-        }
-
         var bootstrapTableOptions = {
+            undefinedText: '',
             columns: columns,
-            data: data,
-            fixedColumns: true,
-            fixedNumber: 1
+            data: this.data,
         };
 
         bootstrapTableOptions.height = $(window).height() - $('.navbar').height() - $('.navbar').height() - 25;
         $(this.table).bootstrapTable('destroy').bootstrapTable(bootstrapTableOptions);
+
+        for (const rowIndex in this.data) {
+            if(this.data[rowIndex].BookingOrderNo) {
+                $(this.table).bootstrapTable('mergeCells', { index : rowIndex, field: "BookingOrderNo", rowspan: this.data[rowIndex].row_count, colspan: 1 });
+                $(this.table).bootstrapTable('mergeCells', { index : rowIndex, field: "BookingOrderDate", rowspan: this.data[rowIndex].row_count, colspan: 1 });
+                $(this.table).bootstrapTable('mergeCells', { index : rowIndex, field: "BuyerName", rowspan: this.data[rowIndex].row_count, colspan: 1 });
+                $(this.table).bootstrapTable('mergeCells', { index : rowIndex, field: "EarlyBooking", rowspan: this.data[rowIndex].row_count, colspan: 1 });
+                $(this.table).bootstrapTable('mergeCells', { index : rowIndex, field: "OrderQuantity", rowspan: this.data[rowIndex].row_count, colspan: 1 });
+                $(this.table).bootstrapTable('mergeCells', { index : rowIndex, field: "DeliveryDate", rowspan: this.data[rowIndex].row_count, colspan: 1 });
+            }
+        }
     }
 
     changePage(e) {
