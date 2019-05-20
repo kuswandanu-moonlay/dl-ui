@@ -95,8 +95,60 @@ export class List {
                 count++; 
                }
             
+               this.fillTable();
             });
             
+    }
+
+    fillTable() {
+        const columns = [
+            { field: 'KodeBooking', title: 'Kode Booking' }, 
+            { field: 'TanggalBooking', title: 'Tanggal Booking' }, 
+            { field: 'Buyer', title: 'Buyer' }, 
+            { field: 'JumlahBookingOrderAwal', title: 'Jumlah Booking Order Awal' }, 
+            { field: 'JumlahBookingOrderAkhir', title: 'Jumlah Booking Order Akhir' }, 
+            { field: 'TanggalPengirimanBooking', title: 'Tanggal Pengiriman(booking)' }, 
+            { field: 'Komoditi', title: 'Komoditi' }, 
+            { field: 'JumlahConfirm', title: 'Jumlah Confirm' }, 
+            { field: 'TanggalConfirm', title: 'Tanggal Confirm' }, 
+            { field: 'TanggalPengirimanConfirm', title: 'Tanggal Pengiriman(confirm)' }, 
+            { field: 'Keterangan', title: 'Keterangan' }, 
+            { field: 'TanggalCancel', title: 'Tanggal Cancel' }, 
+            { field: 'JumlahyangDicancel', title: 'Jumlah yang Dicancel' }, 
+            { field: 'StatusCancel', title: 'Status Cancel' }, 
+        ];
+
+        let data = [];
+        for (let item of this.data) {
+            let rowData = {
+                KodeBooking : item.BookingOrderNo, 
+                TanggalBooking : item.BookingOrderDate, 
+                Buyer : item.BuyerName, 
+                JumlahBookingOrderAwal : item.EarlyBooking, 
+                JumlahBookingOrderAkhir : item.OrderQuantity, 
+                TanggalPengirimanBooking : item.DeliveryDate, 
+                Komoditi : item.ComodityName, 
+                JumlahConfirm : item.ConfirmQuantity, 
+                TanggalConfirm : item.ConfirmDate, 
+                TanggalPengirimanConfirm : item.DeliveryDateItem, 
+                Keterangan : item.Remark, 
+                TanggalCancel : item.CanceledDate, 
+                JumlahyangDicancel : item.CanceledQuantity, 
+                StatusCancel : item.CancelStatus, 
+            };
+
+            data.push(rowData);
+        }
+
+        var bootstrapTableOptions = {
+            columns: columns,
+            data: data,
+            fixedColumns: true,
+            fixedNumber: 1
+        };
+
+        bootstrapTableOptions.height = $(window).height() - $('.navbar').height() - $('.navbar').height() - 25;
+        $(this.table).bootstrapTable('destroy').bootstrapTable(bootstrapTableOptions);
     }
 
     changePage(e) {
