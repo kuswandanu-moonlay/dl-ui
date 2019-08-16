@@ -33,10 +33,24 @@ export class Edit {
                 const doItem = this.data.deliveryOrder.items.find(i => i.Id == item.DOItemId);
                 const doDetail = doItem.fulfillments.find(i => i.Id == item.DODetailId);
 
-                doDetail.EPONo = doItem.purchaseOrderExternal.no;
-                doDetail.Currency = doItem.currency;
+                item.DOItemId = doItem.Id;
+                item.DODetailId = doDetail.Id;
+                item.EPONo = doItem.purchaseOrderExternal.no;
+                item.PRId = doDetail.pRId;
+                item.PRNo = doDetail.pRNo;
+                item.POSerialNumber = doDetail.poSerialNumber;
+                item.Product = doDetail.product;
+                item.DealQuantity = doDetail.dealQuantity;
+                item.DOQuantity = doDetail.doQuantity;
+                item.Uom = doDetail.purchaseOrderUom;
+                item.Conversion = doDetail.conversion;
+                item.SmallQuantity = doDetail.smallQuantity;
+                item.SmallUom = doDetail.smallUom;
+                item.PricePerDealUnit = doDetail.pricePerDealUnit;
+                item.PriceTotal = doDetail.priceTotal;
+                item.Currency = doItem.currency;
+                item.Remark = doDetail.product.Remark
 
-                Object.assign(item, doDetail);
             }
         }
     }

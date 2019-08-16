@@ -16,9 +16,17 @@ export class View {
 
         if (this.data) {
             this.selectedDeliveryOrder = {
-                Id: this.data.DOId,
+                // Id: this.data.DOId,
                 DONo: this.data.DONo
             };
+
+            // this.selectedSupplier = {
+            //     Name: this.data.Supplier.Name
+            // };
+            // this.selectedSupplier.toString = function() {
+            //     return `${this.Name}`;
+            // };
+
             this.data.deliveryOrder = await this.doService.read(this.data.DOId);
             this.selectedSupplier = this.data.deliveryOrder.supplier;
             this.selectedSupplier.toString = function() {
@@ -29,10 +37,23 @@ export class View {
                 const doItem = this.data.deliveryOrder.items.find(i => i.Id == item.DOItemId);
                 const doDetail = doItem.fulfillments.find(i => i.Id == item.DODetailId);
 
-                doDetail.EPONo = doItem.purchaseOrderExternal.no;
-                doDetail.Currency = doItem.currency;
-
-                Object.assign(item, doDetail);
+                item.DOItemId = doItem.Id;
+                item.DODetailId = doDetail.Id;
+                item.EPONo = doItem.purchaseOrderExternal.no;
+                item.PRId = doDetail.pRId;
+                item.PRNo = doDetail.pRNo;
+                item.POSerialNumber = doDetail.poSerialNumber;
+                item.Product = doDetail.product;
+                item.DealQuantity = doDetail.dealQuantity;
+                item.DOQuantity = doDetail.doQuantity;
+                item.Uom = doDetail.purchaseOrderUom;
+                item.Conversion = doDetail.conversion;
+                item.SmallQuantity = doDetail.smallQuantity;
+                item.SmallUom = doDetail.smallUom;
+                item.PricePerDealUnit = doDetail.pricePerDealUnit;
+                item.PriceTotal = doDetail.priceTotal;
+                item.Currency = doItem.currency;
+                item.Remark = doDetail.product.Remark
             }
         }
     }

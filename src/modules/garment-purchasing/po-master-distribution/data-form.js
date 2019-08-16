@@ -82,12 +82,16 @@ export class DataForm {
         return SupplierLoader;
     }
 
+    supplierView = (data) => {
+        return `${data.Code || data.code} - ${data.Name || data.name}`;
+    };
+
     constructor(PurchaseRequestService, DeliveryOrderService) {
         this.prService = PurchaseRequestService;
         this.doService = DeliveryOrderService;
     }
 
-    bind(context) {
+    async bind(context) {
         this.context = context;
         this.data = this.context.data;
         this.error = this.context.error;
@@ -95,9 +99,56 @@ export class DataForm {
         this.itemOptions = {
             isEdit: this.isEdit
         };
+
+        // // this.selectedSupplier = {};
+        // if (this.data.DOId) {
+        //     this.data.deliveryOrder = await this.doService.read(this.data.DOId);
+
+        //     this.selectedSupplier = this.data.deliveryOrder.supplier;
+        //     // this.selectedSupplier.Name = this.data.deliveryOrder.supplier.Name;
+        //     // this.selectedSupplier.Code = this.data.deliveryOrder.supplier.Code;
+
+        //     for (let item of this.data.Items) {
+        //         const doItem = this.data.deliveryOrder.items.find(i => i.Id == item.DOItemId);
+        //         const doDetail = doItem.fulfillments.find(i => i.Id == item.DODetailId);
+
+        //         // const newDODetail = this.getDODetail(doItem, doDetail);
+
+        //         // // console.log(item);
+        //         // // console.log(newDODetail);
+                
+        //         // Object.assign(item, newDODetail);
+
+        //     }
+        // } else {
+        //     this.selectedSupplier = null;
+        // }
+    }
+
+    getDODetail(item, detail) {
+        return {
+            DOItemId: item.Id,
+            DODetailId: detail.Id,
+            EPONo: item.purchaseOrderExternal.no,
+            PRId: detail.pRId,
+            PRNo: detail.pRNo,
+            POSerialNumber: detail.poSerialNumber,
+            Product: detail.product,
+            DealQuantity: detail.dealQuantity,
+            DOQuantity: detail.doQuantity,
+            Uom: detail.purchaseOrderUom,
+            Conversion: detail.conversion,
+            SmallQuantity: detail.smallQuantity,
+            SmallUom: detail.smallUom,
+            PricePerDealUnit: detail.pricePerDealUnit,
+            PriceTotal: detail.priceTotal,
+            Currency: item.currency,
+            Remark: detail.product.Remark
+        };
     }
 
     selectedSupplierChanged(newValue) {
+        console.log("selectedSupplierChanged")
         this.context.selectedDeliveryOrderViewModel.editorValue = "";
         this.selectedDeliveryOrder = null;
 
@@ -130,16 +181,7 @@ export class DataForm {
                 for (const item of this.data.deliveryOrder.items) {
                     for (const detail of item.fulfillments) {
                         if (detail.pRNo && detail.pRNo.startsWith("PR") && detail.pRNo.endsWith("M")) {
-                            detail.DOItemId = item.Id;
-                            detail.DODetailId = detail.Id;
-                            detail.DOQuantity = detail.doQuantity;
-
-                            detail.EPONo = item.purchaseOrderExternal.no;
-                            detail.Currency = item.currency;
-
-                            delete detail.Id;
-
-                            items.push(detail);
+                            items.push(this.getDODetail(item, detail));
 
                             if (purchaseRequestIds.indexOf(detail.pRId) < 0) purchaseRequestIds.push(detail.pRId);
                         }
@@ -157,7 +199,7 @@ export class DataForm {
                 });
 
                 items.forEach(item => {
-                    const purchaseRequest = purchaseRequests.data.find(d => d.Id == item.pRId);
+                    const purchaseRequest = purchaseRequests.data.find(d => d.Id == item.PRId);
                     item.SCId = purchaseRequest ? purchaseRequest.SCId : 0;
 
                     this.data.Items.push(item);

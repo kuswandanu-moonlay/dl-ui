@@ -28,8 +28,10 @@ export class Item {
             isEdit: this.isEdit
         };
 
-        if (this.data.product) {
-            this.dataProduct = `${this.data.product.Code} - ${this.data.product.Name}`;
+        console.log(JSON.stringify(this.data));
+        
+        if (this.data.Product) {
+            this.dataProduct = `${this.data.Product.Code} - ${this.data.Product.Name}`;
         }
 
     }
@@ -38,8 +40,8 @@ export class Item {
         return (event) => {
             this.data.Details.push({
                 Conversion: 1,
-                ParentProduct: this.data.product,
-                Uom: this.data.purchaseOrderUom,
+                // ParentProduct: this.data.Product,
+                Uom: this.data.Uom,
                 SCId: this.data.SCId,
             })
         };
