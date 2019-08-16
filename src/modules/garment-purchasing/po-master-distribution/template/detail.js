@@ -10,12 +10,6 @@ export class Detail {
 
     costCalculationFilter = {};
 
-    controlOptions = {
-        control: {
-            length: 12
-        }
-    };
-
     constructor(CostCalculationService) {
         this.costCalculationService = CostCalculationService;
     }

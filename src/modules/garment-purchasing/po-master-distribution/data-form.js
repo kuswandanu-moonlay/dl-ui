@@ -137,6 +137,8 @@ export class DataForm {
                             detail.EPONo = item.purchaseOrderExternal.no;
                             detail.Currency = item.currency;
 
+                            delete detail.Id;
+
                             items.push(detail);
 
                             if (purchaseRequestIds.indexOf(detail.pRId) < 0) purchaseRequestIds.push(detail.pRId);
@@ -155,7 +157,7 @@ export class DataForm {
                 });
 
                 items.forEach(item => {
-                    const purchaseRequest = purchaseRequests.data.find(d => d.Id == item.PRId);
+                    const purchaseRequest = purchaseRequests.data.find(d => d.Id == item.pRId);
                     item.SCId = purchaseRequest ? purchaseRequest.SCId : 0;
 
                     this.data.Items.push(item);

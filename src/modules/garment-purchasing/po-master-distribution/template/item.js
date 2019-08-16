@@ -1,11 +1,5 @@
 export class Item {
 
-    controlOptions = {
-        control: {
-            length: 12
-        }
-    };
-
     itemsColumns = [
         { header: "RO No" },
         { header: "Nomor Referensi PR" },
@@ -45,7 +39,7 @@ export class Item {
             this.data.Details.push({
                 Conversion: 1,
                 ParentProduct: this.data.product,
-                Uom: this.data.Uom,
+                Uom: this.data.purchaseOrderUom,
                 SCId: this.data.SCId,
             })
         };
